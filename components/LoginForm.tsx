@@ -1,8 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+type Props = {
+  redirectUrl: string;
+};
 
 const schema = z.object({
   email: z.string().email().min(2),
@@ -10,7 +13,7 @@ const schema = z.object({
 
 type Fields = z.infer<typeof schema>;
 
-export const LoginForm: React.FC = () => {
+export const LoginForm: React.FC<Props> = ({ redirectUrl }) => {
   const { register, handleSubmit } = useForm<Fields>({
     resolver: zodResolver(schema),
   });
@@ -22,8 +25,7 @@ export const LoginForm: React.FC = () => {
           email: fields.email,
         },
         {
-          redirectTo:
-            process.env.NEXT_PUBLIC_VERCEL_URL ?? "http://localhost:3000",
+          redirectTo: redirectUrl,
         }
       );
 
