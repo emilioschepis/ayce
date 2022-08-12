@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 
+import RoomList from "~/components/RoomList";
 import { useRequiredUser } from "~/lib/hooks";
 
 const Home: NextPage = () => {
@@ -9,7 +10,11 @@ const Home: NextPage = () => {
     return null;
   }
 
-  return <div>{user.id}</div>;
+  return (
+    <div>
+      <RoomList />
+    </div>
+  );
 };
 
 export default Home;
