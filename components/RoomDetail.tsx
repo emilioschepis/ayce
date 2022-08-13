@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { QueryKey } from "~/lib/query";
 
+import DishList from "./DishList";
+
 type Props = {
   roomId: string;
 };
@@ -33,6 +35,7 @@ const RoomDetail: React.FC<Props> = ({ roomId }) => {
   return (
     <div>
       <h1>{room.name}</h1>
+      <DishList roomId={room.id} />
     </div>
   );
 };
