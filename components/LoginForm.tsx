@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import { supabaseClient } from "~/lib/supabase";
 
 type Props = {
   redirectUrl: string;
@@ -20,14 +21,12 @@ export const LoginForm: React.FC<Props> = ({ redirectUrl }) => {
 
   async function login(fields: Fields) {
     try {
-      const response = await supabaseClient.auth.signIn(
-        {
-          email: fields.email,
+      const response = await supabaseClient.auth.signInWithOtp({
+        email: fields.email,
+        options: {
+          emailRedirectTo: redirectUrl,
         },
-        {
-          redirectTo: redirectUrl,
-        }
-      );
+      });
 
       if (response.error) {
         throw response.error;

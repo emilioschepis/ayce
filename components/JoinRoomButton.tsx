@@ -1,8 +1,8 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import { useRequiredUser } from "~/lib/hooks";
+import { useGuaranteedUser } from "~/lib/AuthContext";
+import { supabaseClient } from "~/lib/supabase";
 
 import PasswordPanel from "./PasswordPanel";
 
@@ -11,8 +11,8 @@ type Props = {
 };
 
 const JoinRoomButton: React.FC<Props> = ({ roomId }) => {
+  const user = useGuaranteedUser();
   const router = useRouter();
-  const { user } = useRequiredUser();
   const [isPanelOpen, setPanelOpen] = useState(false);
 
   async function handleClick() {
@@ -29,7 +29,7 @@ const JoinRoomButton: React.FC<Props> = ({ roomId }) => {
     const response = await supabaseClient
       .from("guests")
       .select("*")
-      .match({ user_id: user!.id, room_id: roomId })
+      .match({ user_id: user.id, room_id: roomId })
       .maybeSingle();
 
     if (response.data) {

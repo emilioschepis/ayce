@@ -1,10 +1,11 @@
 import { Dialog } from "@headlessui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import { supabaseClient } from "~/lib/supabase";
 
 type Props = {
   roomId: string;
@@ -27,7 +28,7 @@ const PasswordPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
 
   async function joinRoom(fields: Fields) {
     const response = await supabaseClient.functions.invoke("join-room", {
-      body: JSON.stringify({ roomId: roomId, password: fields.password }),
+      body: { roomId: roomId, password: fields.password },
     });
 
     if (response.error || response.data.error) {

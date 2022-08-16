@@ -1,13 +1,11 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { QueryKey } from "~/lib/query";
+import { supabaseClient } from "~/lib/supabase";
 
 import JoinRoomButton from "./JoinRoomButton";
 
 const RoomList: React.FC = () => {
-  const queryClient = useQueryClient();
   const { data: rooms, isLoading } = useQuery(
     [QueryKey.ROOMS],
     async ({ signal }) => {
@@ -21,22 +19,9 @@ const RoomList: React.FC = () => {
         throw response.error;
       }
 
-      return response.data as { id: string; name: string }[];
+      return response.data;
     }
   );
-
-  useEffect(() => {
-    let subscription = supabaseClient
-      .from("rooms")
-      .on("*", (_) => {
-        queryClient.refetchQueries([QueryKey.ROOMS]);
-      })
-      .subscribe();
-
-    return () => {
-      supabaseClient.removeSubscription(subscription);
-    };
-  }, [queryClient]);
 
   return (
     <div>

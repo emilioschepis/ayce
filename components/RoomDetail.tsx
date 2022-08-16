@@ -1,7 +1,7 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useQuery } from "@tanstack/react-query";
 
 import { QueryKey } from "~/lib/query";
+import { supabaseClient } from "~/lib/supabase";
 
 import DishList from "./DishList";
 
@@ -24,7 +24,7 @@ const RoomDetail: React.FC<Props> = ({ roomId }) => {
         throw response.error;
       }
 
-      return response.data as { id: string; name: string };
+      return response.data;
     }
   );
 

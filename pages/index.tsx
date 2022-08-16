@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
 
 import RoomList from "~/components/RoomList";
-import { useRequiredUser } from "~/lib/hooks";
+import { useRequiredUser } from "~/lib/AuthContext";
 
 const Home: NextPage = () => {
-  const { user, isLoading } = useRequiredUser();
+  const { user } = useRequiredUser();
 
-  if (isLoading || !user) {
+  if (!user) {
     return null;
   }
 

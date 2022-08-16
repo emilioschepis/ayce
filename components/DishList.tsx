@@ -1,15 +1,13 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { QueryKey } from "~/lib/query";
+import { supabaseClient } from "~/lib/supabase";
 
 type Props = {
   roomId: string;
 };
 
 const DishList: React.FC<Props> = ({ roomId }) => {
-  const queryClient = useQueryClient();
   const { data: dishes, isLoading } = useQuery(
     [QueryKey.DISHES, roomId],
     async ({ signal }) => {
@@ -23,26 +21,9 @@ const DishList: React.FC<Props> = ({ roomId }) => {
         throw response.error;
       }
 
-      return response.data as {
-        id: string;
-        name: string;
-        description?: string;
-      }[];
+      return response.data;
     }
   );
-
-  useEffect(() => {
-    let subscription = supabaseClient
-      .from("dishes:room_id=eq." + roomId)
-      .on("*", (_) => {
-        queryClient.refetchQueries([QueryKey.DISHES, roomId]);
-      })
-      .subscribe();
-
-    return () => {
-      supabaseClient.removeSubscription(subscription);
-    };
-  }, [queryClient, roomId]);
 
   if (isLoading || !dishes) {
     return <div>Loading...</div>;
