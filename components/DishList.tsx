@@ -20,6 +20,7 @@ const DishList: React.FC<Props> = ({ roomId }) => {
         .from("dishes")
         .select("id, name, description, choices(profiles(email))")
         .eq("room_id", roomId)
+        .order("name", { ascending: true })
         .abortSignal(signal!);
 
       if (response.error) {
