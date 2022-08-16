@@ -1,15 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 import { QueryKey } from "~/lib/query";
 import { supabaseClient } from "~/lib/supabase";
 
 import DishList from "./DishList";
+import RecapPanel from "./RecapPanel";
 
 type Props = {
   roomId: string;
 };
 
 const RoomDetail: React.FC<Props> = ({ roomId }) => {
+  const [isRecapOpen, setRecapOpen] = useState(false);
   const { data: room, isLoading } = useQuery(
     [QueryKey.ROOMS, roomId],
     async ({ signal }) => {
@@ -36,6 +39,12 @@ const RoomDetail: React.FC<Props> = ({ roomId }) => {
     <div>
       <h1>{room.name}</h1>
       <DishList roomId={room.id} />
+      <button onClick={() => setRecapOpen(true)}>generate recap</button>
+      <RecapPanel
+        roomId={room.id}
+        isOpen={isRecapOpen}
+        setOpen={setRecapOpen}
+      />
     </div>
   );
 };
