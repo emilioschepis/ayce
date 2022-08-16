@@ -1,4 +1,4 @@
-import { SupabaseClient, User } from "@supabase/supabase-js";
+import { Subscription, SupabaseClient, User } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -15,19 +15,34 @@ type Props = {
 };
 
 const AuthProvider: React.FC<Props> = ({ children, client }) => {
+  const path = useRouter().asPath;
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    client.auth.getSession().then((session) => {
-      setLoading(false);
-      setUser(session.data.session?.user ?? null);
+    let mounted = true;
+
+    if (!path.toLowerCase().includes("magiclink")) {
+      client.auth.getSession().then((session) => {
+        if (mounted) {
+          setLoading(false);
+          setUser(session.data.session?.user ?? null);
+        }
+      });
+    }
+
+    const { subscription } = client.auth.onAuthStateChange((_, session) => {
+      if (mounted) {
+        setLoading(false);
+        setUser(session?.user ?? null);
+      }
     });
 
-    client.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user ?? null);
-    });
-  }, [client.auth]);
+    return () => {
+      mounted = false;
+      subscription?.unsubscribe();
+    };
+  }, [path, client.auth]);
 
   return (
     <AuthContext.Provider value={{ isLoading, user }}>
