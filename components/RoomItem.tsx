@@ -4,6 +4,7 @@ import JoinRoomButton from "./JoinRoomButton";
 type Props = {
   id: string;
   name: string;
+  createdAt: string;
   profiles: {
     email: string;
     image_url: string | null;
@@ -11,11 +12,16 @@ type Props = {
   }[];
 };
 
-const RoomItem: React.FC<Props> = ({ id, name, profiles }) => {
+const RoomItem: React.FC<Props> = ({ id, name, createdAt, profiles }) => {
   return (
     <div className="flex items-start justify-between rounded-lg bg-white p-4 shadow-md">
       <div>
-        <p className="text-md mb-2 font-bold">{name}</p>
+        <p className="text-md font-bold">{name}</p>
+        <p className="mb-2">
+          <time dateTime={createdAt}>
+            {new Date(createdAt).toLocaleString()}
+          </time>
+        </p>
         <JoinRoomButton roomId={id} />
       </div>
       <div>

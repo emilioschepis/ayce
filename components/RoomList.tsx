@@ -13,7 +13,9 @@ const RoomList: React.FC = () => {
     async ({ signal }) => {
       const response = await supabaseClient
         .from("rooms")
-        .select("id, name, guests(profiles(email, image_url, display_name))")
+        .select(
+          "id, name, created_at, guests(profiles(email, image_url, display_name))"
+        )
         .abortSignal(signal!)
         .order("created_at", { ascending: false });
 
@@ -59,6 +61,7 @@ const RoomList: React.FC = () => {
                     <RoomItem
                       id={room.id}
                       name={room.name}
+                      createdAt={room.created_at}
                       profiles={profiles}
                     />
                   </li>
