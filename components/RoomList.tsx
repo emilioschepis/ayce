@@ -15,7 +15,7 @@ const RoomList: React.FC = () => {
         .from("rooms")
         .select("id, name, guests(profiles(email, image_url, display_name))")
         .abortSignal(signal!)
-        .order("created_at");
+        .order("created_at", { ascending: false });
 
       if (response.error) {
         throw response.error;
