@@ -1,10 +1,10 @@
-import { Dialog } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { Fragment, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { string, z } from "zod";
 
 import { QueryKey } from "~/lib/query";
 import { supabaseClient } from "~/lib/supabase";
@@ -18,7 +18,7 @@ type Props = {
 const RecapPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
   const router = useRouter();
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
-  const { data: dishes, isLoading } = useQuery(
+  const { data: dishes } = useQuery(
     [QueryKey.DISHES, roomId],
     async ({ signal }) => {
       const response = await supabaseClient
@@ -36,36 +36,77 @@ const RecapPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
     }
   );
 
+  const recapDishes = useMemo(() => {
+    if (!dishes) {
+      return [];
+    }
+
+    return dishes
+      .map((dish) => ({
+        id: dish.id,
+        name: dish.name,
+        amount: (dish.choices as any[]).length,
+      }))
+      .filter((dish) => dish.amount > 0);
+  }, [dishes]);
+
   return (
-    <Dialog
-      open={isOpen && !isLoading}
-      onClose={() => setOpen(false)}
-      className="relative z-50"
-      initialFocus={cancelButtonRef}
-    >
-      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto max-w-sm rounded bg-white">
-          <Dialog.Title>Recap for the room</Dialog.Title>
-          <Dialog.Description>Here are your chosen dishes.</Dialog.Description>
-          <ul>
-            {dishes?.map((dish) => {
-              const howMany = (
-                dish.choices as { profiles: { email: string } }[]
-              ).length;
-
-              if (howMany === 0) return null;
-
-              return (
-                <li key={dish.id}>
-                  {howMany}&times; {dish.name}
-                </li>
-              );
-            })}
-          </ul>
-        </Dialog.Panel>
-      </div>
-    </Dialog>
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog
+        as="div"
+        onClose={() => setOpen(false)}
+        className="relative z-50"
+        initialFocus={cancelButtonRef}
+      >
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div
+            className="fixed inset-0 bg-black bg-opacity-25"
+            aria-hidden="true"
+          />
+        </Transition.Child>
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+          >
+            <Dialog.Panel className="mx-auto max-w-md rounded-lg bg-white p-8">
+              <Dialog.Title className="text-lg font-bold">
+                Recap for the room
+              </Dialog.Title>
+              <Dialog.Description className="italic text-gray-800">
+                Here are the dishes you selected.
+              </Dialog.Description>
+              <ul className="mt-2 space-y-2">
+                {recapDishes.map((dish, idx) => (
+                  <>
+                    {idx > 0 ? (
+                      <div className="h-[1px] bg-gray-200" aria-hidden />
+                    ) : null}
+                    <li key={dish.id}>
+                      <span className="font-bold">{dish.amount}&times;</span>{" "}
+                      {dish.name}
+                    </li>
+                  </>
+                ))}
+              </ul>
+            </Dialog.Panel>
+          </Transition.Child>
+        </div>
+      </Dialog>
+    </Transition>
   );
 };
 

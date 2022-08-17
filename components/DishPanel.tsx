@@ -1,6 +1,6 @@
-import { Dialog } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const schema = z.object({
-  name: z.string(),
+  name: z.string().min(2),
   description: z.string().optional(),
 });
 
@@ -67,41 +67,103 @@ const DishPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
   }
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={() => setOpen(false)}
-      className="relative z-50"
-      initialFocus={cancelButtonRef}
-    >
-      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto max-w-sm rounded bg-white">
-          <Dialog.Title>Add a dish</Dialog.Title>
-          <Dialog.Description>
-            To add a dish, insert the name on the menu
-          </Dialog.Description>
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog
+        as="div"
+        onClose={() => setOpen(false)}
+        className="relative z-50"
+        initialFocus={cancelButtonRef}
+      >
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div
+            className="fixed inset-0 bg-black bg-opacity-25"
+            aria-hidden="true"
+          />
+        </Transition.Child>
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+          >
+            <Dialog.Panel className="mx-auto max-w-md rounded-lg bg-white p-8">
+              <Dialog.Title className="text-lg font-bold">
+                Add a dish
+              </Dialog.Title>
+              <Dialog.Description className="italic text-gray-800">
+                To add a dish, insert the name on the menu
+              </Dialog.Description>
 
-          <form onSubmit={handleSubmit(addDish)}>
-            <label htmlFor="name" />
-            <input id="name" type="text" {...register("name")} />
+              <form onSubmit={handleSubmit(addDish)}>
+                <div className="flex flex-col">
+                  <div className="mt-2">
+                    <label
+                      htmlFor="name"
+                      className="text-xs font-bold uppercase"
+                    >
+                      Item name
+                    </label>
+                    <input
+                      id="name"
+                      type="text"
+                      className="w-full rounded-md"
+                      placeholder="item name on the menu"
+                      {...register("name")}
+                    />
+                  </div>
 
-            <label htmlFor="description" />
-            <input id="description" type="text" {...register("description")} />
+                  <div className="mt-2">
+                    <label
+                      htmlFor="description"
+                      className="text-xs font-bold uppercase"
+                    >
+                      Description
+                    </label>
+                    <input
+                      id="description"
+                      type="text"
+                      className="w-full rounded-md"
+                      placeholder="description of the dish"
+                      {...register("description")}
+                    />
+                  </div>
 
-            <button
-              ref={cancelButtonRef}
-              type="button"
-              onClick={() => setOpen(false)}
-            >
-              Cancel
-            </button>
-            <button type="submit" disabled={formState.isSubmitting}>
-              Add
-            </button>
-          </form>
-        </Dialog.Panel>
-      </div>
-    </Dialog>
+                  <div className="mt-4 self-end">
+                    <button
+                      ref={cancelButtonRef}
+                      type="button"
+                      onClick={() => setOpen(false)}
+                      className="mr-2 rounded-md px-3 py-1 text-blue-700 hover:bg-blue-100"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={formState.isSubmitting}
+                      className="rounded-md bg-blue-700 px-3 py-1 text-white hover:bg-blue-600 disabled:bg-gray-600"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </Dialog.Panel>
+          </Transition.Child>
+        </div>
+      </Dialog>
+    </Transition>
   );
 };
 
