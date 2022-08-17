@@ -12,7 +12,7 @@ type Props = {};
 const ProfileViewer: React.FC<Props> = ({}) => {
   const userId = useGuaranteedUser().id;
   const { data: profile, isLoading } = useQuery(
-    [QueryKey.PROFILE],
+    [QueryKey.PROFILE, userId],
     async ({ signal }) => {
       const response = await supabaseClient
         .from("profiles")
