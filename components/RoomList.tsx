@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { QueryKey } from "~/lib/query";
 import { supabaseClient } from "~/lib/supabase";
 
+import CreateRoomButton from "./CreateRoomButton";
 import JoinRoomButton from "./JoinRoomButton";
 
 const RoomList: React.FC = () => {
@@ -39,6 +40,7 @@ const RoomList: React.FC = () => {
           </ul>
         </div>
       )}
+      <CreateRoomButton />
     </div>
   );
 };
