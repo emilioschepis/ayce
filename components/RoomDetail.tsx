@@ -53,7 +53,7 @@ const RoomDetail: React.FC<Props> = ({ roomId }) => {
         className="flex w-full items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600"
       >
         <ClipboardListIcon className="h-5 w-5" aria-hidden />
-        <p className="ml-1 text-sm">Generate recap</p>
+        <p className="ml-1 text-sm">View selected dishes</p>
       </button>
       <RecapPanel
         roomId={room.id}
