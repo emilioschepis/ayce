@@ -88,7 +88,7 @@ const CreateRoomPanel: React.FC<Props> = ({ isOpen, setOpen }) => {
                   <div className="mt-4">
                     <label
                       htmlFor="name"
-                      className="text-xs font-bold uppercase"
+                      className="mb-1 text-xs font-bold uppercase"
                     >
                       Room name
                     </label>
@@ -103,7 +103,7 @@ const CreateRoomPanel: React.FC<Props> = ({ isOpen, setOpen }) => {
                   <div className="mt-2">
                     <label
                       htmlFor="password"
-                      className="text-xs font-bold uppercase"
+                      className="mb-1 text-xs font-bold uppercase"
                     >
                       Room password
                     </label>

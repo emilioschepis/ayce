@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import Link from "next/link";
 
 import { useGuaranteedUser } from "~/lib/AuthContext";
 import { QueryKey } from "~/lib/query";
 import { supabaseClient } from "~/lib/supabase";
 
+import icon from "../public/icon.png";
 import Avatar from "./Avatar";
 
 type Props = {};
@@ -30,12 +32,15 @@ const Header: React.FC<Props> = ({}) => {
   );
 
   return (
-    <header className="flex items-center justify-between bg-white p-4 shadow-md">
-      <div>
-        <Link href="/">
-          <a className="text-xl font-bold">All You Can Eat</a>
-        </Link>
-      </div>
+    <header className="flex items-center justify-between bg-white px-4 py-2 shadow-md">
+      <Link href="/">
+        <a className="flex items-center">
+          <Image src={icon} alt="logo" width={40} height={40} />
+          <div className="ml-2 flex flex-col items-start">
+            <p className="text-xl font-bold">AYCE</p>
+          </div>
+        </a>
+      </Link>
       <div>
         {profile ? (
           <Link href="profile">

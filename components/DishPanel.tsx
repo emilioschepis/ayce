@@ -111,7 +111,7 @@ const DishPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
                   <div className="mt-2">
                     <label
                       htmlFor="name"
-                      className="text-xs font-bold uppercase"
+                      className="mb-1 text-xs font-bold uppercase"
                     >
                       Item name
                     </label>
@@ -127,7 +127,7 @@ const DishPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
                   <div className="mt-2">
                     <label
                       htmlFor="description"
-                      className="text-xs font-bold uppercase"
+                      className="mb-1 text-xs font-bold uppercase"
                     >
                       Description
                     </label>

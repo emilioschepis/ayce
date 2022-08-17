@@ -84,7 +84,7 @@ const PasswordPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
                   <div className="mt-2">
                     <label
                       htmlFor="password"
-                      className="text-xs font-bold uppercase"
+                      className="mb-1 text-xs font-bold uppercase"
                     >
                       Room password
                     </label>
