@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 
+import MainLayout from "~/components/MainLayout";
 import ProfileEditor from "~/components/ProfileEditor";
 import ProfileViewer from "~/components/ProfileViewer";
 import { useRequiredUser } from "~/lib/AuthContext";
@@ -13,7 +14,9 @@ const Profile: NextPage = () => {
 
   return (
     <>
-      <ProfileViewer />
+      <MainLayout>
+        <ProfileViewer />
+      </MainLayout>
     </>
   );
 };

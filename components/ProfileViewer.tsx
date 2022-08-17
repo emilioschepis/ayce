@@ -30,17 +30,11 @@ const ProfileViewer: React.FC<Props> = ({}) => {
   );
 
   if (isLoading || !profile) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (
     <div>
-      <p>{profile.display_name}</p>
-      {profile.image_url ? (
-        <div className="relative h-16 w-16 overflow-hidden rounded-full">
-          <Image src={profile.image_url} alt="profile image" layout="fill" />
-        </div>
-      ) : null}
       <ProfileEditor
         displayName={profile.display_name}
         imageUrl={profile.image_url}

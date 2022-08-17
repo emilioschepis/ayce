@@ -8,7 +8,7 @@ type Props = {
 
 const MainLayout: React.FC<Props> = ({ children }) => {
   return (
-    <div className="h-screen bg-gray-200">
+    <div className="h-screen">
       <Header />
       <main className="p-4">{children}</main>
     </div>
