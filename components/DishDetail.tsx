@@ -4,6 +4,8 @@ import { useGuaranteedUser } from "~/lib/AuthContext";
 import { queryClient, QueryKey } from "~/lib/query";
 import { supabaseClient } from "~/lib/supabase";
 
+import Avatar from "./Avatar";
+
 type Props = {
   roomId: string;
   dish: {
@@ -16,9 +18,15 @@ type Props = {
 
 const DishDetail: React.FC<Props> = ({ dish, roomId }) => {
   const userId = useGuaranteedUser().id;
-  const choosers = (dish.choices as { profiles: { email: string } }[])
-    .map((c) => c.profiles.email)
-    .join(", ");
+  const choosers = (
+    dish.choices as {
+      profiles: {
+        email: string;
+        image_url: string | null;
+        display_name: string | null;
+      };
+    }[]
+  ).map((choice) => choice.profiles);
 
   const { isLoading: isAdding, mutate: add } = useMutation(
     async () => {
@@ -53,7 +61,16 @@ const DishDetail: React.FC<Props> = ({ dish, roomId }) => {
         <b>{dish.name}</b>
         {dish.description ? ` (${dish.description})` : null}
       </p>
-      <p>{choosers}</p>
+      <div className="flex">
+        {choosers.map((chooser) => (
+          <Avatar
+            key={chooser.email}
+            email={chooser.email}
+            image_url={chooser.image_url}
+            display_name={chooser.display_name}
+          />
+        ))}
+      </div>
       <button disabled={isAdding || isRemoving} onClick={() => add()}>
         add
       </button>

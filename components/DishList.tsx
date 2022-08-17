@@ -18,7 +18,9 @@ const DishList: React.FC<Props> = ({ roomId }) => {
     async ({ signal }) => {
       const response = await supabaseClient
         .from("dishes")
-        .select("id, name, description, choices(profiles(email))")
+        .select(
+          "id, name, description, choices(profiles(email, display_name, image_url))"
+        )
         .eq("room_id", roomId)
         .order("name", { ascending: true })
         .abortSignal(signal!);
