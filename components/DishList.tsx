@@ -1,3 +1,4 @@
+import { PlusCircleIcon } from "@heroicons/react/outline";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -19,7 +20,7 @@ const DishList: React.FC<Props> = ({ roomId }) => {
       const response = await supabaseClient
         .from("dishes")
         .select(
-          "id, name, description, choices(profiles(email, display_name, image_url))"
+          "id, name, description, choices(profiles(id, email, display_name, image_url))"
         )
         .eq("room_id", roomId)
         .order("name", { ascending: true })
@@ -34,25 +35,34 @@ const DishList: React.FC<Props> = ({ roomId }) => {
   );
 
   if (isLoading || !dishes) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (
-    <div>
-      <ul>
-        {dishes.map((dish) => (
-          <li key={dish.id}>
-            <DishDetail dish={dish} roomId={roomId} />
-          </li>
-        ))}
-      </ul>
-      <button onClick={() => setAddingDish(true)}>Add dish</button>
+    <>
+      <div>
+        <button
+          type="button"
+          onClick={() => setAddingDish(true)}
+          className="flex items-center rounded-md bg-blue-700 px-3 py-1 text-white hover:bg-blue-600 focus:bg-blue-600"
+        >
+          <PlusCircleIcon className="h-5 w-5" aria-hidden />
+          <p className="ml-1">Add dish</p>
+        </button>
+        <ul className="mt-4">
+          {dishes.map((dish) => (
+            <li key={dish.id} className="mb-2">
+              <DishDetail dish={dish} roomId={roomId} />
+            </li>
+          ))}
+        </ul>
+      </div>
       <DishPanel
         roomId={roomId}
         isOpen={isAddingDish}
         setOpen={setAddingDish}
       />
-    </div>
+    </>
   );
 };
 

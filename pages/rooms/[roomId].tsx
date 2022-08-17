@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
+import MainLayout from "~/components/MainLayout";
 import RoomDetail from "~/components/RoomDetail";
 import { useRequiredUser } from "~/lib/AuthContext";
 
@@ -15,7 +16,9 @@ const Room: NextPage = () => {
 
   return (
     <div>
-      <RoomDetail roomId={roomId} />
+      <MainLayout>
+        <RoomDetail roomId={roomId} />
+      </MainLayout>
     </div>
   );
 };

@@ -37,7 +37,9 @@ const RoomDetail: React.FC<Props> = ({ roomId }) => {
 
   return (
     <div>
-      <h1>{room.name}</h1>
+      <div className="mb-2">
+        <h1 className="text-xl font-bold">{room.name}</h1>
+      </div>
       <DishList roomId={room.id} />
       <button onClick={() => setRecapOpen(true)}>generate recap</button>
       <RecapPanel

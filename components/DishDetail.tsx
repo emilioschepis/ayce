@@ -4,7 +4,7 @@ import { useGuaranteedUser } from "~/lib/AuthContext";
 import { queryClient, QueryKey } from "~/lib/query";
 import { supabaseClient } from "~/lib/supabase";
 
-import Avatar from "./Avatar";
+import AvatarList from "./AvatarList";
 
 type Props = {
   roomId: string;
@@ -21,12 +21,15 @@ const DishDetail: React.FC<Props> = ({ dish, roomId }) => {
   const choosers = (
     dish.choices as {
       profiles: {
+        id: string;
         email: string;
         image_url: string | null;
         display_name: string | null;
       };
     }[]
   ).map((choice) => choice.profiles);
+
+  const isSelected = Boolean(choosers.find((c) => c.id === userId));
 
   const { isLoading: isAdding, mutate: add } = useMutation(
     async () => {
@@ -56,27 +59,33 @@ const DishDetail: React.FC<Props> = ({ dish, roomId }) => {
   );
 
   return (
-    <div>
-      <p>
-        <b>{dish.name}</b>
-        {dish.description ? ` (${dish.description})` : null}
-      </p>
-      <div className="flex">
-        {choosers.map((chooser) => (
-          <Avatar
-            key={chooser.email}
-            email={chooser.email}
-            image_url={chooser.image_url}
-            display_name={chooser.display_name}
-          />
-        ))}
+    <div className="overflow-hidden rounded-lg bg-white shadow-md">
+      <div className="flex items-center justify-between p-2">
+        <div>
+          <p className="text-md font-bold text-blue-800">{dish.name}</p>
+          {dish.description ? (
+            <p className="text-sm text-gray-700">{dish.description}</p>
+          ) : null}
+        </div>
+        <AvatarList profiles={choosers} />
       </div>
-      <button disabled={isAdding || isRemoving} onClick={() => add()}>
-        add
-      </button>
-      <button disabled={isAdding || isRemoving} onClick={() => remove()}>
-        remove
-      </button>
+      {isSelected ? (
+        <button
+          disabled={isAdding || isRemoving}
+          onClick={() => remove()}
+          className="h-8 w-full bg-green-600 text-xs font-bold uppercase text-white"
+        >
+          Selected
+        </button>
+      ) : (
+        <button
+          disabled={isAdding || isRemoving}
+          onClick={() => add()}
+          className="h-8 w-full bg-gray-600 text-xs font-bold uppercase text-white"
+        >
+          Tap to select
+        </button>
+      )}
     </div>
   );
 };
