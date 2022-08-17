@@ -65,7 +65,9 @@ const DishDetail: React.FC<Props> = ({ dish, roomId }) => {
           <p className="text-md font-bold text-blue-800">{dish.name}</p>
           {dish.description ? (
             <p className="text-sm text-gray-700">{dish.description}</p>
-          ) : null}
+          ) : (
+            <p className="text-sm italic text-gray-700">no description</p>
+          )}
         </div>
         <AvatarList profiles={choosers} />
       </div>
