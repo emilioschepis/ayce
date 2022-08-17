@@ -43,7 +43,7 @@ const Header: React.FC<Props> = ({}) => {
       </Link>
       <div>
         {profile ? (
-          <Link href="profile">
+          <Link href="/profile">
             <a className="flex items-center space-x-2">
               <p className="text-lg">{profile.display_name ?? profile.email}</p>
               <Avatar
