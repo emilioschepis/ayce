@@ -45,10 +45,10 @@ const JoinRoomButton: React.FC<Props> = ({ roomId }) => {
       <button
         type="button"
         onClick={handleClick}
-        className="flex items-center rounded-md bg-blue-700 px-3 py-1 text-white hover:bg-blue-600 focus:bg-blue-600"
+        className="flex items-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600"
       >
         <UserAddIcon className="h-5 w-5" aria-hidden />
-        <p className="ml-1">Join</p>
+        <p className="ml-1 text-sm">Join</p>
       </button>
       <PasswordPanel
         roomId={roomId}
