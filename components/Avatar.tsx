@@ -9,7 +9,7 @@ type Props = {
 const Avatar: React.FC<Props> = ({ email, display_name, image_url }) => {
   if (image_url) {
     return (
-      <div className="relative h-12 w-12 overflow-hidden rounded-full">
+      <div className="relative h-8 w-8 overflow-hidden rounded-full">
         <Image src={image_url} layout="fill" alt={display_name ?? email} />
       </div>
     );
@@ -18,7 +18,7 @@ const Avatar: React.FC<Props> = ({ email, display_name, image_url }) => {
   const initials = (display_name ?? email).substring(0, 2);
 
   return (
-    <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gray-300">
+    <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-300">
       <p>{initials}</p>
     </div>
   );

@@ -1,3 +1,4 @@
+import { PlusCircleIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 
 import CreateRoomPanel from "./CreateRoomPanel";
@@ -9,8 +10,13 @@ const CreateRoomButton: React.FC<Props> = ({}) => {
 
   return (
     <>
-      <button type="button" onClick={() => setCreatingRoom(true)}>
-        Create room
+      <button
+        type="button"
+        onClick={() => setCreatingRoom(true)}
+        className="flex items-center rounded-md bg-blue-700 px-3 py-1 text-white hover:bg-blue-600 focus:bg-blue-600"
+      >
+        <PlusCircleIcon className="h-5 w-5" aria-hidden />
+        <p className="ml-1">Create room</p>
       </button>
       <CreateRoomPanel isOpen={isCreatingRoom} setOpen={setCreatingRoom} />
     </>

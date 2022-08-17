@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 
+import MainLayout from "~/components/MainLayout";
 import RoomList from "~/components/RoomList";
 import { useRequiredUser } from "~/lib/AuthContext";
 
@@ -12,7 +13,9 @@ const Home: NextPage = () => {
 
   return (
     <div>
-      <RoomList />
+      <MainLayout>
+        <RoomList />
+      </MainLayout>
     </div>
   );
 };

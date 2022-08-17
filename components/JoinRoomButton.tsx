@@ -1,3 +1,4 @@
+import { UserAddIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -41,8 +42,13 @@ const JoinRoomButton: React.FC<Props> = ({ roomId }) => {
 
   return (
     <>
-      <button type="button" onClick={handleClick}>
-        Join
+      <button
+        type="button"
+        onClick={handleClick}
+        className="flex items-center rounded-md bg-blue-700 px-3 py-1 text-white hover:bg-blue-600 focus:bg-blue-600"
+      >
+        <UserAddIcon className="h-5 w-5" aria-hidden />
+        <p className="ml-1">Join</p>
       </button>
       <PasswordPanel
         roomId={roomId}
