@@ -1,5 +1,6 @@
 import { ClipboardListIcon, PlusCircleIcon } from "@heroicons/react/outline";
 import { useQuery } from "@tanstack/react-query";
+import Head from "next/head";
 import { useState } from "react";
 
 import { QueryKey } from "~/lib/query";
@@ -39,6 +40,9 @@ const RoomDetail: React.FC<Props> = ({ roomId }) => {
 
   return (
     <div className="space-y-4">
+      <Head>
+        <title>{room.name} - AYCE</title>
+      </Head>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
         <h1 className="text-xl font-bold">{room.name}</h1>
         <div className="mt-2 md:mt-0">

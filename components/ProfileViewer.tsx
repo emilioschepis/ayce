@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import Head from "next/head";
 import Image from "next/image";
 
 import { useGuaranteedUser } from "~/lib/AuthContext";
@@ -35,6 +36,14 @@ const ProfileViewer: React.FC<Props> = ({}) => {
 
   return (
     <div>
+      <Head>
+        <title>
+          {profile.display_name
+            ? `${profile.display_name}'s profile`
+            : "Profile"}{" "}
+          - AYCE
+        </title>
+      </Head>
       <ProfileEditor
         displayName={profile.display_name}
         imageUrl={profile.image_url}

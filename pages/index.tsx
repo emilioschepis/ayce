@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Head from "next/head";
 
 import MainLayout from "~/components/MainLayout";
 import RoomList from "~/components/RoomList";
@@ -13,6 +14,13 @@ const Home: NextPage = () => {
 
   return (
     <div>
+      <Head>
+        <title>AYCE - All You Can Eat companion</title>
+        <meta
+          name="description"
+          content="All You Can Eat companion to track the selected dishes from a menu"
+        />
+      </Head>
       <MainLayout>
         <RoomList />
       </MainLayout>

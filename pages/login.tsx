@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
 
 import { LoginForm } from "~/components/LoginForm";
 
@@ -9,6 +10,7 @@ type Props = {
 const Login: NextPage<Props> = ({ redirectUrl }) => {
   return (
     <div>
+      <Head>Login - AYCE</Head>
       <LoginForm redirectUrl={redirectUrl} />
     </div>
   );
