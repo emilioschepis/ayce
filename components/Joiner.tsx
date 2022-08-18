@@ -34,7 +34,7 @@ const Joiner: React.FC<Props> = ({}) => {
       return;
     }
 
-    joinRoom(roomId, password)
+    joinRoom(roomId, decodeURIComponent(password))
       .then(() => router.replace("/rooms/" + roomId))
       .catch(() => router.replace("/"));
   }, [code, router]);

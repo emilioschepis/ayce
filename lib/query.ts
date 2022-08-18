@@ -12,4 +12,5 @@ export enum QueryKey {
   "PROFILE" = "PROFILE",
   "ROOMS" = "ROOMS",
   "DISHES" = "DISHES",
+  "CODE" = "CODE",
 }
