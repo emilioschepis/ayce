@@ -1,10 +1,12 @@
+import { RealtimeChannel, Subscription } from "@supabase/supabase-js";
 import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect } from "react";
 
-import { QueryKey } from "~/lib/query";
+import { useRealtime } from "~/lib/hooks";
+import { queryClient, QueryKey } from "~/lib/query";
 import { supabaseClient } from "~/lib/supabase";
 
 import CreateRoomButton from "./CreateRoomButton";
-import JoinRoomButton from "./JoinRoomButton";
 import RoomItem from "./RoomItem";
 
 const RoomList: React.FC = () => {
@@ -26,6 +28,12 @@ const RoomList: React.FC = () => {
       return response.data;
     }
   );
+
+  const onTablesChanged = useCallback(
+    () => queryClient.refetchQueries([QueryKey.ROOMS]),
+    []
+  );
+  useRealtime("rooms", "rooms", "", onTablesChanged);
 
   return (
     <div>

@@ -16,7 +16,7 @@ This website is built using [Next.js](https://nextjs.org/) and is hosted on [Ver
 - Database: every application needs some persistence. PostgreSQL is reliable and full of features, and Supabase makes it super easy to setup and manage
 - Storage: personalize your account with your own profile picture
 - Edge functions: some functionality like creating and joining a room require some server-side code to make sure the room passwords are not leaked. Deno functions work incredibly well and are easy to deploy
-- Realtime: _coming soon_
+- Realtime: uses the improved realtime functionality of supabase to automatically track changes to rooms and dishes, so it's always up to date with all the guests' changes
 
 ## Credits
 

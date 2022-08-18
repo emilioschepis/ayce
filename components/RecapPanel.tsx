@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { Fragment, useMemo, useRef } from "react";
+import React, { Fragment, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { string, z } from "zod";
 
@@ -91,15 +91,15 @@ const RecapPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
               </Dialog.Description>
               <ul className="mt-2 space-y-2">
                 {recapDishes.map((dish, idx) => (
-                  <>
+                  <React.Fragment key={dish.id}>
                     {idx > 0 ? (
                       <div className="h-[1px] bg-gray-200" aria-hidden />
                     ) : null}
-                    <li key={dish.id}>
+                    <li>
                       <span className="font-bold">{dish.amount}&times;</span>{" "}
                       {dish.name}
                     </li>
-                  </>
+                  </React.Fragment>
                 ))}
               </ul>
             </Dialog.Panel>

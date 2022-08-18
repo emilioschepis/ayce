@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
 
-import { QueryKey } from "~/lib/query";
+import { useRealtime } from "~/lib/hooks";
+import { queryClient, QueryKey } from "~/lib/query";
 import { supabaseClient } from "~/lib/supabase";
 
 import DishDetail from "./DishDetail";
@@ -28,6 +30,23 @@ const DishList: React.FC<Props> = ({ roomId }) => {
 
       return response.data;
     }
+  );
+
+  const onTablesChanged = useCallback(
+    () => queryClient.refetchQueries([QueryKey.DISHES, roomId]),
+    [roomId]
+  );
+  useRealtime(
+    `dishes_${roomId}`,
+    "dishes",
+    `room_id=eq.${roomId}`,
+    onTablesChanged
+  );
+  useRealtime(
+    `choices_${roomId}`,
+    "choices",
+    `room_id=eq.${roomId}`,
+    onTablesChanged
   );
 
   if (isLoading || !dishes) {
