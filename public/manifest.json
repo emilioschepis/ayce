@@ -1,7 +1,7 @@
 {
   "name": "AYCE - All You Can Eat companion",
   "short_name": "AYCE",
-  "theme_color": "#1d4ed8",
+  "theme_color": "#ffffff",
   "background_color": "#e5e7eb",
   "display": "fullscreen",
   "orientation": "portrait",
@@ -36,7 +36,8 @@
     {
       "src": "icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "icons/icon-384x384.png",

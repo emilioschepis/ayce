@@ -9,7 +9,7 @@ type Props = {
 
 const Login: NextPage<Props> = ({ redirectUrl }) => {
   return (
-    <div>
+    <div className="h-screen bg-white">
       <Head>Login - AYCE</Head>
       <LoginForm redirectUrl={redirectUrl} />
     </div>

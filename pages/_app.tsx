@@ -28,7 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           sizes="32x32"
         />
         <link rel="apple-touch-icon" href="/icons/icon-512x512.png"></link>
-        <meta name="theme-color" content="#1d4ed8" />
+        <meta name="theme-color" content="#ffffff" />
       </Head>
       <AuthContext client={supabaseClient}>
         <QueryClientProvider client={queryClient}>

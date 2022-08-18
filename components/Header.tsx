@@ -35,7 +35,9 @@ const Header: React.FC<Props> = ({}) => {
     <header className="flex items-center justify-between bg-white px-4 py-2 shadow-md">
       <Link href="/">
         <a className="flex items-center">
-          <Image src={icon} alt="logo" width={40} height={40} />
+          <div className="h-10 w-10">
+            <Image src={icon} alt="logo" width={40} height={40} />
+          </div>
           <div className="ml-2 flex flex-col items-start">
             <p className="text-xl font-bold">AYCE</p>
           </div>
