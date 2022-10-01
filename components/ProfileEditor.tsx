@@ -76,7 +76,13 @@ const ProfileEditor: React.FC<Props> = ({ displayName, imageUrl }) => {
     <div className="mx-auto flex max-w-md flex-col items-center rounded-lg bg-white p-4 shadow-md">
       {imageUrl ? (
         <div className="relative h-24 w-24 overflow-hidden rounded-full">
-          <Image src={imageUrl} alt={displayName ?? "profile"} layout="fill" />
+          <Image
+            src={imageUrl}
+            alt={displayName ?? "profile"}
+            width={96}
+            height={96}
+            className="object-cover"
+          />
         </div>
       ) : null}
       <form

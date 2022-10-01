@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/future/image";
 
 type Props = {
   email: string;
@@ -10,7 +10,13 @@ const Avatar: React.FC<Props> = ({ email, display_name, image_url }) => {
   if (image_url) {
     return (
       <div className="relative h-8 w-8 overflow-hidden rounded-full">
-        <Image src={image_url} layout="fill" alt={display_name ?? email} />
+        <Image
+          src={image_url}
+          alt={display_name ?? email}
+          width={32}
+          height={32}
+          className="object-cover"
+        />
       </div>
     );
   }
