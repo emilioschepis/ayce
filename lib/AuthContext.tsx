@@ -31,7 +31,9 @@ const AuthProvider: React.FC<Props> = ({ children, client }) => {
       });
     }
 
-    const { subscription } = client.auth.onAuthStateChange((_, session) => {
+    const {
+      data: { subscription },
+    } = client.auth.onAuthStateChange((_, session) => {
       if (mounted) {
         setLoading(false);
         setUser(session?.user ?? null);
