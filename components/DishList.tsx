@@ -28,7 +28,9 @@ const DishList: React.FC<Props> = ({ roomId }) => {
         throw response.error;
       }
 
-      return response.data;
+      return response.data.sort(
+        (d1, d2) => parseInt(d1.name) - parseInt(d2.name)
+      );
     }
   );
 
