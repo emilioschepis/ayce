@@ -24,7 +24,7 @@ type Fields = z.infer<typeof schema>;
 const DishPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
   const userId = useGuaranteedUser().id;
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
-  const { register, handleSubmit, formState } = useForm<Fields>({
+  const { register, handleSubmit, reset, formState } = useForm<Fields>({
     resolver: zodResolver(schema),
   });
 
@@ -63,6 +63,8 @@ const DishPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
 
     // Update the dishes on screen
     await queryClient.refetchQueries([QueryKey.DISHES, roomId]);
+
+    reset();
     setOpen(false);
   }
 
@@ -120,6 +122,7 @@ const DishPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
                       type="text"
                       className="w-full rounded-md"
                       placeholder="item name on the menu"
+                      disabled={formState.isSubmitting}
                       {...register("name")}
                     />
                   </div>
@@ -136,6 +139,7 @@ const DishPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
                       type="text"
                       className="w-full rounded-md"
                       placeholder="description of the dish"
+                      disabled={formState.isSubmitting}
                       {...register("description")}
                     />
                   </div>
