@@ -19,7 +19,7 @@ const schema = z.object({
 
 type Fields = z.infer<typeof schema>;
 
-export const LoginForm: React.FC<Props> = ({}) => {
+export const RegisterForm: React.FC<Props> = ({}) => {
   const router = useRouter();
   const {
     register,
@@ -29,9 +29,9 @@ export const LoginForm: React.FC<Props> = ({}) => {
     resolver: zodResolver(schema),
   });
 
-  async function login(fields: Fields) {
+  async function create(fields: Fields) {
     try {
-      const response = await supabaseClient.auth.signInWithPassword({
+      const response = await supabaseClient.auth.signUp({
         email: fields.email,
         password: fields.password,
       });
@@ -42,7 +42,7 @@ export const LoginForm: React.FC<Props> = ({}) => {
 
       await router.replace("/");
     } catch (error) {
-      console.error("Error while authenticating:", error);
+      console.error("Error while registering:", error);
     }
   }
 
@@ -58,7 +58,7 @@ export const LoginForm: React.FC<Props> = ({}) => {
       </p>
       <form
         className="flex flex-col items-stretch"
-        onSubmit={handleSubmit(login)}
+        onSubmit={handleSubmit(create)}
       >
         <label htmlFor="email" className="mb-1 text-xs font-bold uppercase">
           Email
@@ -77,7 +77,7 @@ export const LoginForm: React.FC<Props> = ({}) => {
         <input
           id="password"
           type="password"
-          autoComplete="current-password"
+          autoComplete="new-password"
           className="mb-4 w-full rounded-md"
           placeholder="your password"
           {...register("password", { required: true, minLength: 6 })}
@@ -88,13 +88,13 @@ export const LoginForm: React.FC<Props> = ({}) => {
           className="flex items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600"
         >
           <LoginIcon className="h-5 w-5" aria-hidden />
-          <p className="ml-1 text-sm">Sign in</p>
+          <p className="ml-1 text-sm">Register</p>
         </button>
         <p className="mt-3 self-center">
-          Don&apos;t have an account?{" "}
-          <Link href="/register">
+          Already have an account?{" "}
+          <Link href="/login">
             <a className="text-blue-700 underline hover:text-blue-600">
-              Register now
+              Sign in now
             </a>
           </Link>
         </p>
