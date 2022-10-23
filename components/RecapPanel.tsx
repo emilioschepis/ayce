@@ -84,14 +84,14 @@ const RecapPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="mx-auto max-w-md rounded-lg bg-white p-8">
+            <Dialog.Panel className="mx-auto flex max-h-screen max-w-md flex-col rounded-lg bg-white p-8">
               <Dialog.Title className="text-lg font-bold">
                 Recap for the room
               </Dialog.Title>
               <Dialog.Description className="italic text-gray-800">
                 Here are the dishes you selected.
               </Dialog.Description>
-              <ul className="mt-2 space-y-2">
+              <ul className="mt-2 flex-1 space-y-2 overflow-y-auto">
                 {recapDishes.map((dish, idx) => (
                   <React.Fragment key={dish.id}>
                     {idx > 0 ? (
