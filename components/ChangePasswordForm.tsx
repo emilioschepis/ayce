@@ -1,11 +1,11 @@
-import { LoginIcon } from "@heroicons/react/outline";
+import { KeyIcon } from "@heroicons/react/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { useUser } from "~/lib/AuthContext";
 import { supabaseClient } from "~/lib/supabase";
 
 import icon from "../public/icon.png";
@@ -13,13 +13,12 @@ import icon from "../public/icon.png";
 type Props = {};
 
 const schema = z.object({
-  email: z.string().email().min(2),
   password: z.string().min(6),
 });
 
 type Fields = z.infer<typeof schema>;
 
-export const LoginForm: React.FC<Props> = ({}) => {
+export const ChangePasswordForm: React.FC<Props> = ({}) => {
   const router = useRouter();
   const {
     register,
@@ -28,11 +27,11 @@ export const LoginForm: React.FC<Props> = ({}) => {
   } = useForm<Fields>({
     resolver: zodResolver(schema),
   });
+  const { user } = useUser();
 
-  async function login(fields: Fields) {
+  async function changePassword(fields: Fields) {
     try {
-      const response = await supabaseClient.auth.signInWithPassword({
-        email: fields.email,
+      const response = await supabaseClient.auth.updateUser({
         password: fields.password,
       });
 
@@ -42,8 +41,12 @@ export const LoginForm: React.FC<Props> = ({}) => {
 
       await router.replace("/");
     } catch (error) {
-      console.error("Error while authenticating:", error);
+      console.error("Error while changing password:", error);
     }
+  }
+
+  if (!user) {
+    return null;
   }
 
   return (
@@ -52,55 +55,30 @@ export const LoginForm: React.FC<Props> = ({}) => {
         <Image src={icon} alt="logo" width={80} height={80} />
       </div>
       <h1 className="text-xl font-bold">Welcome to AYCE</h1>
-      <p className="mb-4 italic text-gray-700">
-        Create your own room and invite guests, start selecting dishes and
-        create a simple recap to fill the order sheet.
-      </p>
+      <p className="mb-4 italic text-gray-700">Choose your new password</p>
       <form
         className="flex flex-col items-stretch"
-        onSubmit={handleSubmit(login)}
+        onSubmit={handleSubmit(changePassword)}
       >
-        <label htmlFor="email" className="mb-1 text-xs font-bold uppercase">
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          className="mb-4 w-full rounded-md"
-          placeholder="you@email.com"
-          {...register("email", { required: true, minLength: 2 })}
-        />
         <label htmlFor="password" className="mb-1 text-xs font-bold uppercase">
           Password
         </label>
         <input
           id="password"
           type="password"
-          autoComplete="current-password"
-          className="w-full rounded-md"
+          autoComplete="new-password"
+          className="mb-4 w-full rounded-md"
           placeholder="your password"
           {...register("password", { required: true, minLength: 6 })}
         />
-        <div className="mb-4 self-end text-blue-700 underline hover:text-blue-600">
-          <Link href="/forgot-password">Forgot password?</Link>
-        </div>
         <button
           type="submit"
           disabled={isSubmitting}
           className="flex items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600"
         >
-          <LoginIcon className="h-5 w-5" aria-hidden />
-          <p className="ml-1 text-sm">Sign in</p>
+          <KeyIcon className="h-5 w-5" aria-hidden />
+          <p className="ml-1 text-sm">Save password</p>
         </button>
-        <p className="mt-3 self-center">
-          Don&apos;t have an account?{" "}
-          <Link href="/register">
-            <a className="text-blue-700 underline hover:text-blue-600">
-              Register now
-            </a>
-          </Link>
-        </p>
       </form>
     </div>
   );

@@ -1,4 +1,4 @@
-import { LoginIcon } from "@heroicons/react/outline";
+import { MailIcon } from "@heroicons/react/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,12 +14,11 @@ type Props = {};
 
 const schema = z.object({
   email: z.string().email().min(2),
-  password: z.string().min(6),
 });
 
 type Fields = z.infer<typeof schema>;
 
-export const LoginForm: React.FC<Props> = ({}) => {
+export const ForgotPasswordForm: React.FC<Props> = ({}) => {
   const router = useRouter();
   const {
     register,
@@ -29,12 +28,16 @@ export const LoginForm: React.FC<Props> = ({}) => {
     resolver: zodResolver(schema),
   });
 
-  async function login(fields: Fields) {
+  async function resetPassword(fields: Fields) {
     try {
-      const response = await supabaseClient.auth.signInWithPassword({
-        email: fields.email,
-        password: fields.password,
-      });
+      const response = await supabaseClient.auth.resetPasswordForEmail(
+        fields.email,
+        {
+          redirectTo: process.env.VERCEL_URL
+            ? `https://${process.env.VERCEL_URL}/change-password`
+            : "http://localhost:3000/change-password",
+        }
+      );
 
       if (response.error) {
         throw response.error;
@@ -42,7 +45,7 @@ export const LoginForm: React.FC<Props> = ({}) => {
 
       await router.replace("/");
     } catch (error) {
-      console.error("Error while authenticating:", error);
+      console.error("Error while resetting password:", error);
     }
   }
 
@@ -53,12 +56,11 @@ export const LoginForm: React.FC<Props> = ({}) => {
       </div>
       <h1 className="text-xl font-bold">Welcome to AYCE</h1>
       <p className="mb-4 italic text-gray-700">
-        Create your own room and invite guests, start selecting dishes and
-        create a simple recap to fill the order sheet.
+        Enter your email to receive a password reset link.
       </p>
       <form
         className="flex flex-col items-stretch"
-        onSubmit={handleSubmit(login)}
+        onSubmit={handleSubmit(resetPassword)}
       >
         <label htmlFor="email" className="mb-1 text-xs font-bold uppercase">
           Email
@@ -71,33 +73,19 @@ export const LoginForm: React.FC<Props> = ({}) => {
           placeholder="you@email.com"
           {...register("email", { required: true, minLength: 2 })}
         />
-        <label htmlFor="password" className="mb-1 text-xs font-bold uppercase">
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          className="w-full rounded-md"
-          placeholder="your password"
-          {...register("password", { required: true, minLength: 6 })}
-        />
-        <div className="mb-4 self-end text-blue-700 underline hover:text-blue-600">
-          <Link href="/forgot-password">Forgot password?</Link>
-        </div>
         <button
           type="submit"
           disabled={isSubmitting}
           className="flex items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600"
         >
-          <LoginIcon className="h-5 w-5" aria-hidden />
-          <p className="ml-1 text-sm">Sign in</p>
+          <MailIcon className="h-5 w-5" aria-hidden />
+          <p className="ml-1 text-sm">Receive link</p>
         </button>
         <p className="mt-3 self-center">
-          Don&apos;t have an account?{" "}
-          <Link href="/register">
+          Sign in with a different account?{" "}
+          <Link href="/login">
             <a className="text-blue-700 underline hover:text-blue-600">
-              Register now
+              Sign in now
             </a>
           </Link>
         </p>
