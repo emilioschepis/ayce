@@ -14,9 +14,9 @@ const ForgotPassword: NextPage<{ redirectTo: string }> = ({ redirectTo }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const redirectTo = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}/change-password`
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const redirectTo = process.env.VERCEL
+    ? `https://${req.headers.host}/change-password`
     : "http://localhost:3000/change-password";
 
   return {
