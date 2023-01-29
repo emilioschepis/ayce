@@ -10,7 +10,9 @@ import { supabaseClient } from "~/lib/supabase";
 
 import icon from "../public/icon.png";
 
-type Props = {};
+type Props = {
+  redirectTo: string;
+};
 
 const schema = z.object({
   email: z.string().email().min(2),
@@ -18,7 +20,7 @@ const schema = z.object({
 
 type Fields = z.infer<typeof schema>;
 
-export const ForgotPasswordForm: React.FC<Props> = ({}) => {
+export const ForgotPasswordForm: React.FC<Props> = ({ redirectTo }) => {
   const router = useRouter();
   const {
     register,
@@ -32,11 +34,7 @@ export const ForgotPasswordForm: React.FC<Props> = ({}) => {
     try {
       const response = await supabaseClient.auth.resetPasswordForEmail(
         fields.email,
-        {
-          redirectTo: process.env.VERCEL_URL
-            ? `https://${process.env.VERCEL_URL}/change-password`
-            : "http://localhost:3000/change-password",
-        }
+        { redirectTo }
       );
 
       if (response.error) {
