@@ -1,13 +1,13 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React, { Fragment, useMemo, useRef } from "react";
-import { useForm } from "react-hook-form";
-import { string, z } from "zod";
 
 import { QueryKey } from "~/lib/query";
 import { supabaseClient } from "~/lib/supabase";
+import { asElement, asSafeArray } from "~/lib/utils";
+
+import AvatarList from "./AvatarList";
 
 type Props = {
   roomId: string;
@@ -23,7 +23,9 @@ const RecapPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
     async ({ signal }) => {
       const response = await supabaseClient
         .from("dishes")
-        .select("id, name, description, choices(profiles(email))")
+        .select(
+          "id, name, description, choices(profiles(email, image_url, display_name))"
+        )
         .eq("room_id", roomId)
         .order("name", { ascending: true })
         .abortSignal(signal!);
@@ -43,13 +45,29 @@ const RecapPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
       return [];
     }
 
-    return dishes
-      .map((dish) => ({
-        id: dish.id,
-        name: dish.name,
-        amount: (dish.choices as any[]).length,
-      }))
-      .filter((dish) => dish.amount > 0);
+    const list = dishes
+      .filter((d) => asSafeArray(d.choices).length > 0)
+      .map((d) => {
+        return {
+          id: d.id,
+          name: d.name,
+          amount: asSafeArray(d.choices).length,
+          profiles: asSafeArray(d.choices).map((c) => asElement(c.profiles)),
+        };
+      });
+
+    return list;
+  }, [dishes]);
+
+  const numberOfDishes = useMemo(() => {
+    if (!dishes) {
+      return 0;
+    }
+
+    return dishes.reduce(
+      (acc, next) => acc + asSafeArray(next.choices).length,
+      0
+    );
   }, [dishes]);
 
   return (
@@ -74,7 +92,7 @@ const RecapPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
             aria-hidden="true"
           />
         </Transition.Child>
-        <div className="fixed inset-0 flex items-center justify-center p-4">
+        <div className="fixed inset-0 p-4">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -84,22 +102,25 @@ const RecapPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="mx-auto flex max-h-screen max-w-md flex-col rounded-lg bg-white p-8">
+            <Dialog.Panel className="mx-auto flex h-full max-w-lg flex-col rounded-lg bg-white p-8">
               <Dialog.Title className="text-lg font-bold">
                 Recap for the room
               </Dialog.Title>
               <Dialog.Description className="italic text-gray-800">
-                Here are the dishes you selected.
+                Here are the {numberOfDishes} dishes you selected.
               </Dialog.Description>
-              <ul className="mt-2 flex-1 space-y-2 overflow-y-auto">
+              <ul className="mt-2 flex-1 space-y-2 overflow-y-scroll">
                 {recapDishes.map((dish, idx) => (
                   <React.Fragment key={dish.id}>
                     {idx > 0 ? (
                       <div className="h-[1px] bg-gray-200" aria-hidden />
                     ) : null}
-                    <li>
-                      <span className="font-bold">{dish.amount}&times;</span>{" "}
-                      {dish.name}
+                    <li className="flex items-center justify-between">
+                      <p>
+                        <span className="font-bold">{dish.amount}&times;</span>{" "}
+                        {dish.name}
+                      </p>
+                      <AvatarList small profiles={dish.profiles} />
                     </li>
                   </React.Fragment>
                 ))}

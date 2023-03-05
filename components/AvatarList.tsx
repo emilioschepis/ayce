@@ -1,6 +1,7 @@
 import Avatar from "./Avatar";
 
 type Props = {
+  small?: boolean;
   profiles: {
     email: string;
     image_url: string | null;
@@ -8,7 +9,7 @@ type Props = {
   }[];
 };
 
-const AvatarList: React.FC<Props> = ({ profiles }) => {
+const AvatarList: React.FC<Props> = ({ profiles, small = false }) => {
   return (
     <div className="flex items-center -space-x-5">
       {profiles.slice(0, 4).map((profile) => (
@@ -17,6 +18,7 @@ const AvatarList: React.FC<Props> = ({ profiles }) => {
           email={profile.email}
           image_url={profile.image_url}
           display_name={profile.display_name}
+          small={small}
         />
       ))}
     </div>
