@@ -115,13 +115,13 @@ const DishPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
                       htmlFor="name"
                       className="mb-1 text-xs font-bold uppercase"
                     >
-                      Item name
+                      Item number
                     </label>
                     <input
                       id="name"
                       type="text"
                       className="w-full rounded-md"
-                      placeholder="item name on the menu"
+                      placeholder="23"
                       disabled={formState.isSubmitting}
                       {...register("name")}
                     />
@@ -132,13 +132,13 @@ const DishPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
                       htmlFor="description"
                       className="mb-1 text-xs font-bold uppercase"
                     >
-                      Description
+                      Name of the dish
                     </label>
                     <input
                       id="description"
                       type="text"
                       className="w-full rounded-md"
-                      placeholder="description of the dish"
+                      placeholder="Salmon Gunkan"
                       disabled={formState.isSubmitting}
                       {...register("description")}
                     />
