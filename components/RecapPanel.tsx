@@ -96,20 +96,23 @@ const RecapPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
             leaveTo="opacity-0 scale-95"
           >
             <Dialog.Panel className="mx-auto flex h-full max-w-lg flex-col rounded-lg bg-white py-8">
-              <div className="px-8">
-                <Dialog.Title className="text-lg font-bold">
-                  Recap for the room
-                </Dialog.Title>
-                <Dialog.Description className="italic text-gray-800">
-                  Here are the {numberOfDishes} dishes you selected.
-                </Dialog.Description>
+              <div className="flex justify-between gap-4 px-8">
+                <div>
+                  <Dialog.Title className="text-lg font-bold">
+                    Recap for the room
+                  </Dialog.Title>
+                  <Dialog.Description className="italic text-gray-800">
+                    Here are the {numberOfDishes} dishes you selected.
+                  </Dialog.Description>
+                </div>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="flex h-8 w-8 items-center justify-center rounded bg-gray-200"
+                >
+                  <XMarkIcon className="h-5 w-5" aria-label="Close panel" />
+                </button>
               </div>
-              <button
-                onClick={() => setOpen(false)}
-                className="absolute top-8 right-8 flex h-8 w-8 items-center justify-center rounded bg-gray-200"
-              >
-                <XMarkIcon className="h-5 w-5" aria-label="Close panel" />
-              </button>
+
               <ul className="mx-4 mt-2 flex-1 space-y-2 overflow-y-scroll px-4">
                 {recapDishes.map((dish, idx) => (
                   <React.Fragment key={dish.id}>
