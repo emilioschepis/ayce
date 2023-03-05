@@ -1,10 +1,10 @@
-import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
 import {
   decode,
   encode,
-} from "https://deno.land/std@0.152.0/encoding/base64.ts";
+} from "https://deno.land/std@0.178.0/encoding/base64.ts";
+import { serve } from "https://deno.land/std@0.178.0/http/server.ts";
 import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.0.0-rc.1";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.10.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -71,7 +71,7 @@ serve(async (req) => {
   }
 
   const encodedPassword = encodeURIComponent(
-    (response.data.passwords as { password: string }[])[0].password
+    (response.data.passwords as { password: string }).password
   );
 
   const qs = `id=${response.data.id}&password=${encodedPassword}`;

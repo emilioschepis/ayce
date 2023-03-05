@@ -1,4 +1,4 @@
-import { LoginIcon } from "@heroicons/react/outline";
+import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
@@ -90,15 +90,16 @@ export const LoginForm: React.FC<Props> = ({}) => {
           disabled={isSubmitting}
           className="flex items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600"
         >
-          <LoginIcon className="h-5 w-5" aria-hidden />
+          <ArrowRightOnRectangleIcon className="h-5 w-5" aria-hidden />
           <p className="ml-1 text-sm">Sign in</p>
         </button>
         <p className="mt-3 self-center">
           Don&apos;t have an account?{" "}
-          <Link href="/register">
-            <a className="text-blue-700 underline hover:text-blue-600">
-              Register now
-            </a>
+          <Link
+            href="/register"
+            className="text-blue-700 underline hover:text-blue-600"
+          >
+            Register now
           </Link>
         </p>
       </form>

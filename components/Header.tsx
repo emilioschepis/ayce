@@ -33,27 +33,23 @@ const Header: React.FC<Props> = ({}) => {
 
   return (
     <header className="flex items-center justify-between bg-white px-4 py-2 shadow-md">
-      <Link href="/">
-        <a className="flex items-center">
-          <div className="h-10 w-10">
-            <Image src={icon} alt="logo" width={40} height={40} />
-          </div>
-          <div className="ml-2 flex flex-col items-start">
-            <p className="text-xl font-bold">AYCE</p>
-          </div>
-        </a>
+      <Link href="/" className="flex items-center">
+        <div className="h-10 w-10">
+          <Image src={icon} alt="logo" width={40} height={40} />
+        </div>
+        <div className="ml-2 flex flex-col items-start">
+          <p className="text-xl font-bold">AYCE</p>
+        </div>
       </Link>
       <div>
         {profile ? (
-          <Link href="/profile">
-            <a className="flex items-center space-x-2">
-              <p className="text-lg">{profile.display_name ?? profile.email}</p>
-              <Avatar
-                email={profile.email}
-                display_name={profile.display_name}
-                image_url={profile.image_url}
-              />
-            </a>
+          <Link href="/profile" className="flex items-center space-x-2">
+            <p className="text-lg">{profile.display_name ?? profile.email}</p>
+            <Avatar
+              email={profile.email}
+              display_name={profile.display_name}
+              image_url={profile.image_url}
+            />
           </Link>
         ) : null}
       </div>

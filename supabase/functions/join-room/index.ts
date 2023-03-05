@@ -1,5 +1,5 @@
-import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@1.35.6";
+import { serve } from "https://deno.land/std@0.178.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.10.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -20,7 +20,9 @@ serve(async (req) => {
   );
 
   const token = req.headers.get("Authorization")!.replace("Bearer ", "");
-  const { user } = await client.auth.api.getUser(token);
+  const {
+    data: { user },
+  } = await client.auth.getUser(token);
 
   const { roomId, password } = await req.json();
 

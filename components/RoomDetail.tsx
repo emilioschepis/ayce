@@ -1,8 +1,8 @@
 import {
-  ClipboardListIcon,
+  ClipboardDocumentListIcon,
   PlusCircleIcon,
-  QrcodeIcon,
-} from "@heroicons/react/outline";
+  QrCodeIcon,
+} from "@heroicons/react/24/outline";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { useState } from "react";
@@ -64,7 +64,7 @@ const RoomDetail: React.FC<Props> = ({ roomId }) => {
         onClick={() => setRecapOpen(true)}
         className="flex w-full items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600"
       >
-        <ClipboardListIcon className="h-5 w-5" aria-hidden />
+        <ClipboardDocumentListIcon className="h-5 w-5" aria-hidden />
         <p className="ml-1 text-sm">View selected dishes</p>
       </button>
       {userId === room.owner_id ? (
@@ -73,7 +73,7 @@ const RoomDetail: React.FC<Props> = ({ roomId }) => {
           onClick={() => setQrCodeOpen(true)}
           className="flex w-full items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600"
         >
-          <QrcodeIcon className="h-5 w-5" aria-hidden />
+          <QrCodeIcon className="h-5 w-5" aria-hidden />
           <p className="ml-1 text-sm">View QR code</p>
         </button>
       ) : null}

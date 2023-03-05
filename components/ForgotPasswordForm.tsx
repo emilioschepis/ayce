@@ -1,4 +1,4 @@
-import { MailIcon } from "@heroicons/react/outline";
+import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
@@ -76,15 +76,16 @@ export const ForgotPasswordForm: React.FC<Props> = ({ redirectTo }) => {
           disabled={isSubmitting}
           className="flex items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600"
         >
-          <MailIcon className="h-5 w-5" aria-hidden />
+          <EnvelopeIcon className="h-5 w-5" aria-hidden />
           <p className="ml-1 text-sm">Receive link</p>
         </button>
         <p className="mt-3 self-center">
           Sign in with a different account?{" "}
-          <Link href="/login">
-            <a className="text-blue-700 underline hover:text-blue-600">
-              Sign in now
-            </a>
+          <Link
+            href="/login"
+            className="text-blue-700 underline hover:text-blue-600"
+          >
+            Sign in now
           </Link>
         </p>
       </form>
