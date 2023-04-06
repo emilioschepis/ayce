@@ -24,7 +24,8 @@ export const LoginForm: React.FC<Props> = ({}) => {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
+    setError,
   } = useForm<Fields>({
     resolver: zodResolver(schema),
   });
@@ -37,7 +38,8 @@ export const LoginForm: React.FC<Props> = ({}) => {
       });
 
       if (response.error) {
-        throw response.error;
+        setError("email", { message: response.error.message });
+        return;
       }
 
       await router.replace("/");
@@ -60,35 +62,54 @@ export const LoginForm: React.FC<Props> = ({}) => {
         className="flex flex-col items-stretch"
         onSubmit={handleSubmit(login)}
       >
-        <label htmlFor="email" className="mb-1 text-xs font-bold uppercase">
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          className="mb-4 w-full rounded-md"
-          placeholder="you@email.com"
-          {...register("email", { required: true, minLength: 2 })}
-        />
-        <label htmlFor="password" className="mb-1 text-xs font-bold uppercase">
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          className="w-full rounded-md"
-          placeholder="your password"
-          {...register("password", { required: true, minLength: 6 })}
-        />
+        <div className="mb-4">
+          <label htmlFor="email" className="mb-1 text-xs font-bold uppercase">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            className="w-full rounded-md"
+            placeholder="you@email.com"
+            aria-errormessage="email-error"
+            {...register("email", { required: true, minLength: 2 })}
+          />
+          {errors.email ? (
+            <p id="email-error" className="mt-1 text-sm text-red-600">
+              {errors.email.message}
+            </p>
+          ) : null}
+        </div>
+        <div>
+          <label
+            htmlFor="password"
+            className="mb-1 text-xs font-bold uppercase"
+          >
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            autoComplete="current-password"
+            className="w-full rounded-md"
+            placeholder="your password"
+            aria-errormessage="password-error"
+            {...register("password", { required: true, minLength: 6 })}
+          />
+          {errors.password ? (
+            <p id="password-error" className="mt-1 text-sm text-red-600">
+              {errors.password.message}
+            </p>
+          ) : null}
+        </div>
         <div className="mb-4 self-end text-blue-700 underline hover:text-blue-600">
           <Link href="/forgot-password">Forgot password?</Link>
         </div>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600"
+          className="flex items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600 disabled:bg-gray-700"
         >
           <ArrowRightOnRectangleIcon className="h-5 w-5" aria-hidden />
           <p className="ml-1 text-sm">Sign in</p>
