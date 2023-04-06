@@ -9,6 +9,7 @@ import { z } from "zod";
 import { supabaseClient } from "~/lib/supabase";
 
 import icon from "../public/icon.png";
+import GoogleButton from "./GoogleButton";
 
 type Props = {};
 
@@ -109,11 +110,12 @@ export const LoginForm: React.FC<Props> = ({}) => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600 disabled:bg-gray-700"
+          className="mb-2 flex items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-600 focus:bg-blue-600 disabled:bg-gray-700"
         >
           <ArrowRightOnRectangleIcon className="h-5 w-5" aria-hidden />
           <p className="ml-1 text-sm">Sign in</p>
         </button>
+        <GoogleButton />
         <p className="mt-3 self-center">
           Don&apos;t have an account?{" "}
           <Link
