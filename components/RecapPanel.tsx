@@ -49,6 +49,7 @@ const RecapPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
         return {
           id: d.id,
           name: d.name,
+          description: d.description,
           amount: asSafeArray(d.choices).length,
           profiles: asSafeArray(d.choices).map((c) => asElement(c.profiles)),
         };
@@ -119,10 +120,13 @@ const RecapPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
                     {idx > 0 ? (
                       <div className="h-[1px] bg-gray-200" aria-hidden />
                     ) : null}
-                    <li className="flex items-center justify-between">
-                      <p>
-                        <span className="font-bold">{dish.amount}&times;</span>{" "}
-                        {dish.name}
+                    <li className="flex items-center justify-between gap-2">
+                      <p className="flex-wrap overflow-x-hidden text-ellipsis whitespace-nowrap">
+                        <span className="font-black">{dish.amount}&times;</span>{" "}
+                        {dish.name}{" "}
+                        <span className="italic text-gray-600">
+                          {dish.description}
+                        </span>
                       </p>
                       <AvatarList small profiles={dish.profiles} />
                     </li>
