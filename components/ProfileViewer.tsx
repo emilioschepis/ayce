@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
-import Image from "next/image";
 
 import { useGuaranteedUser } from "~/lib/AuthContext";
 import { QueryKey } from "~/lib/query";
 import { supabaseClient } from "~/lib/supabase";
 
+import LogoutButton from "./LogoutButton";
 import ProfileEditor from "./ProfileEditor";
 
 type Props = {};
@@ -48,6 +48,9 @@ const ProfileViewer: React.FC<Props> = ({}) => {
         displayName={profile.display_name}
         imageUrl={profile.image_url}
       />
+      <div className="mx-auto mt-4 flex max-w-md flex-col items-stretch rounded-lg bg-white p-4 shadow-md">
+        <LogoutButton />
+      </div>
     </div>
   );
 };
