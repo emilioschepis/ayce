@@ -31,18 +31,18 @@ const DishPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
   async function checkDish(name: string) {
     const response = await supabaseClient
       .from("dishes")
-      .select("id")
+      .select("id, description")
       .match({ room_id: roomId, name })
       .maybeSingle();
 
-    return response.data?.id;
+    return response.data;
   }
 
   async function addDish(fields: Fields) {
-    let dishId = await checkDish(fields.name);
+    let dish = await checkDish(fields.name);
 
     // If no dish with that name exists, create one
-    if (!dishId) {
+    if (!dish) {
       const { data } = await supabaseClient
         .from("dishes")
         .insert({
@@ -50,16 +50,24 @@ const DishPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
           name: fields.name,
           description: fields.description ?? null,
         })
-        .select("id")
+        .select("id, description")
         .single();
 
-      dishId = data!.id;
+      dish = data!;
+    }
+
+    // If the dish exists, but has no description, use the one provided by this user
+    if (!dish.description && fields.description) {
+      await supabaseClient
+        .from("dishes")
+        .update({ description: fields.description })
+        .eq("id", dish.id);
     }
 
     // Add the created (or existing) dish to the user's choices
     await supabaseClient
       .from("choices")
-      .insert({ dish_id: dishId, room_id: roomId, user_id: userId });
+      .insert({ dish_id: dish.id, room_id: roomId, user_id: userId });
 
     // Update the dishes on screen
     await queryClient.refetchQueries([QueryKey.DISHES, roomId]);
