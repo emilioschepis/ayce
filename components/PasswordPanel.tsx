@@ -14,7 +14,7 @@ type Props = {
 };
 
 const schema = z.object({
-  password: z.string().min(6),
+  password: z.string().min(3).trim(),
 });
 
 type Fields = z.infer<typeof schema>;
@@ -22,17 +22,17 @@ type Fields = z.infer<typeof schema>;
 const PasswordPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
   const router = useRouter();
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
-  const { register, handleSubmit, formState } = useForm<Fields>({
+  const { register, handleSubmit, formState, setError } = useForm<Fields>({
     resolver: zodResolver(schema),
   });
 
   async function joinRoom(fields: Fields) {
     const response = await supabaseClient.functions.invoke("join-room", {
-      body: { roomId: roomId, password: fields.password },
+      body: { roomId: roomId, password: fields.password.trim() },
     });
 
     if (response.error || response.data.error) {
-      setOpen(false);
+      setError("password", { message: "Could not join room" });
       return;
     }
 
@@ -93,8 +93,17 @@ const PasswordPanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
                       type="text"
                       className="w-full rounded-md"
                       placeholder="password"
+                      aria-errormessage="password-error"
                       {...register("password")}
                     />
+                    {formState.errors.password ? (
+                      <p
+                        id="password-error"
+                        className="mt-1 text-sm text-red-600"
+                      >
+                        {formState.errors.password.message}
+                      </p>
+                    ) : null}
                   </div>
 
                   <div className="mt-4 self-end">

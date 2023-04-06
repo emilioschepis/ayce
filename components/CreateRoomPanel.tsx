@@ -14,7 +14,7 @@ type Props = {
 
 const schema = z.object({
   name: z.string().min(3),
-  password: z.string().min(3),
+  password: z.string().min(3).trim(),
 });
 
 type Fields = z.infer<typeof schema>;
@@ -30,7 +30,7 @@ const CreateRoomPanel: React.FC<Props> = ({ isOpen, setOpen }) => {
     const response = await supabaseClient.functions.invoke("create-room", {
       body: {
         name: fields.name,
-        password: fields.password,
+        password: fields.password.trim(),
       },
     });
 
@@ -97,8 +97,14 @@ const CreateRoomPanel: React.FC<Props> = ({ isOpen, setOpen }) => {
                       type="text"
                       className="w-full rounded-md"
                       placeholder="my room name"
+                      aria-errormessage="name-error"
                       {...register("name")}
                     />
+                    {formState.errors.name ? (
+                      <p id="name-error" className="mt-1 text-sm text-red-600">
+                        {formState.errors.name.message}
+                      </p>
+                    ) : null}
                   </div>
                   <div className="mt-2">
                     <label
@@ -112,8 +118,17 @@ const CreateRoomPanel: React.FC<Props> = ({ isOpen, setOpen }) => {
                       type="text"
                       className="w-full rounded-md"
                       placeholder="password"
+                      aria-errormessage="password-error"
                       {...register("password")}
                     />
+                    {formState.errors.password ? (
+                      <p
+                        id="password-error"
+                        className="mt-1 text-sm text-red-600"
+                      >
+                        {formState.errors.password.message}
+                      </p>
+                    ) : null}
                   </div>
 
                   <div className="mt-4 self-end">
