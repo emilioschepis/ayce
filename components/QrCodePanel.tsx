@@ -70,7 +70,13 @@ const QrCodePanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
 
               <div className="relative mx-auto mt-4 h-64 w-64">
                 {code?.url ? (
-                  <Image src={code.url} alt={roomId} width={256} height={256} />
+                  <Image
+                    unoptimized
+                    src={code.url}
+                    alt={roomId}
+                    width={256}
+                    height={256}
+                  />
                 ) : null}
               </div>
             </Dialog.Panel>
