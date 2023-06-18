@@ -54,15 +54,7 @@ const RoomList: React.FC = () => {
           <div>
             <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {rooms?.map((room) => {
-                const profiles = (
-                  room.guests as {
-                    profiles: {
-                      email: string;
-                      image_url: string | null;
-                      display_name: string | null;
-                    };
-                  }[]
-                ).map((g) => g.profiles);
+                const profiles = room.guests.flatMap((g) => g.profiles);
 
                 return (
                   <li key={room.id}>
