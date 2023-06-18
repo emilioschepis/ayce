@@ -41,7 +41,13 @@ export const ForgotPasswordForm: React.FC<Props> = ({ redirectTo }) => {
         throw response.error;
       }
 
-      await router.replace("/");
+      const localRedirectTo = localStorage.getItem("redirectTo");
+      if (localRedirectTo?.startsWith("/")) {
+        localStorage.removeItem("redirectTo");
+        await router.replace(localRedirectTo);
+      } else {
+        await router.replace("/");
+      }
     } catch (error) {
       console.error("Error while resetting password:", error);
     }

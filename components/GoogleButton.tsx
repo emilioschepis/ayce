@@ -5,10 +5,18 @@ import { supabaseClient } from "~/lib/supabase";
 const GoogleButton: React.FC = () => {
   const mutation = useMutation({
     mutationFn: async () => {
+      let destination = "/";
+
+      const redirectTo = localStorage.getItem("redirectTo");
+      if (redirectTo?.startsWith("/")) {
+        localStorage.removeItem("redirectTo");
+        destination = redirectTo;
+      }
+
       await supabaseClient.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: window.location.href.replace("/login", "/"),
+          redirectTo: window.location.href.replace("/login", destination),
         },
       });
     },

@@ -43,7 +43,13 @@ export const LoginForm: React.FC<Props> = ({}) => {
         return;
       }
 
-      await router.replace("/");
+      const redirectTo = localStorage.getItem("redirectTo");
+      if (redirectTo?.startsWith("/")) {
+        localStorage.removeItem("redirectTo");
+        await router.replace(redirectTo);
+      } else {
+        await router.replace("/");
+      }
     } catch (error) {
       console.error("Error while authenticating:", error);
     }

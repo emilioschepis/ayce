@@ -69,6 +69,7 @@ export function useRequiredUser() {
 
   useEffect(() => {
     if (!isLoading && !user) {
+      localStorage.setItem("redirectTo", router.asPath);
       router.replace(`/login`);
     }
   }, [router, isLoading, user]);

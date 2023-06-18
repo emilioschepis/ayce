@@ -10,6 +10,7 @@ const ShareJoinLinkButton: React.FC<Props> = ({ joinLink }) => {
       // Copy the link to the clipboard
       // TODO: display a confirmation popup
       await navigator.clipboard.writeText(joinLink);
+      return;
     }
 
     await navigator.share({
