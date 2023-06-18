@@ -60,16 +60,6 @@ serve(async (req) => {
     });
   }
 
-  const existingUrl = await client.storage
-    .from("qrcodes")
-    .createSignedUrl(`${roomId}.gif`, 3600);
-
-  if (existingUrl.data?.signedUrl) {
-    return new Response(JSON.stringify({ url: existingUrl.data.signedUrl }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  }
-
   const encodedPassword = encodeURIComponent(
     (response.data.passwords as { password: string }).password
   );
@@ -78,6 +68,19 @@ serve(async (req) => {
   const base64 = encode(qs);
 
   const url = `https://ayce.vercel.app/join?code=${base64}`;
+
+  const existingUrl = await client.storage
+    .from("qrcodes")
+    .createSignedUrl(`${roomId}.gif`, 3600);
+
+  if (existingUrl.data?.signedUrl) {
+    return new Response(
+      JSON.stringify({ url, codeUrl: existingUrl.data.signedUrl }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      }
+    );
+  }
   const code = (await qrcode(url)) as unknown as string;
 
   const upload = await client.storage
@@ -109,7 +112,10 @@ serve(async (req) => {
     });
   }
 
-  return new Response(JSON.stringify({ url: signedUrl.data.signedUrl }), {
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
-  });
+  return new Response(
+    JSON.stringify({ url, codeUrl: signedUrl.data.signedUrl }),
+    {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    }
+  );
 });

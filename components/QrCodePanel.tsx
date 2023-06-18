@@ -6,6 +6,8 @@ import { Fragment } from "react";
 import { QueryKey } from "~/lib/query";
 import { supabaseClient } from "~/lib/supabase";
 
+import ShareJoinLinkButton from "./ShareJoinLinkButton";
+
 type Props = {
   roomId: string;
   isOpen: boolean;
@@ -24,7 +26,7 @@ const QrCodePanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
         throw response.error || response.data.error;
       }
 
-      return response.data as { url: string };
+      return response.data as { url: string; codeUrl: string };
     },
     {
       enabled: isOpen,
@@ -69,14 +71,28 @@ const QrCodePanel: React.FC<Props> = ({ roomId, isOpen, setOpen }) => {
               </Dialog.Description>
 
               <div className="relative mx-auto mt-4 h-64 w-64">
-                {code?.url ? (
+                {code?.codeUrl ? (
                   <Image
                     unoptimized
-                    src={code.url}
+                    src={code.codeUrl}
                     alt={roomId}
                     width={256}
                     height={256}
                   />
+                ) : null}
+              </div>
+
+              <div className="mt-4 flex items-center gap-2">
+                {code?.url ? (
+                  <>
+                    <input
+                      readOnly
+                      type="url"
+                      className="w-full rounded-md"
+                      defaultValue={code.url}
+                    />
+                    <ShareJoinLinkButton joinLink={code.url} />
+                  </>
                 ) : null}
               </div>
             </Dialog.Panel>
