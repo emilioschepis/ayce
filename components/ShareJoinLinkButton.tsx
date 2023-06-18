@@ -6,17 +6,16 @@ type Props = {
 
 const ShareJoinLinkButton: React.FC<Props> = ({ joinLink }) => {
   async function shareLink() {
-    if (typeof navigator.share === "function") {
-      // Share the link natively
-      await navigator.share({
-        title: "AYCE",
-        text: "Share access to this room",
-        url: joinLink,
-      });
-    } else {
+    if (!navigator.canShare) {
       // Copy the link to the clipboard
+      // TODO: display a confirmation popup
       await navigator.clipboard.writeText(joinLink);
     }
+
+    await navigator.share({
+      text: "Join my room on AYCE!",
+      url: joinLink,
+    });
   }
 
   return (
