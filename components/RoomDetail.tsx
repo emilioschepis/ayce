@@ -1,3 +1,4 @@
+import { Switch } from "@headlessui/react";
 import {
   ClipboardDocumentListIcon,
   PlusCircleIcon,
@@ -24,6 +25,7 @@ const RoomDetail: React.FC<Props> = ({ roomId }) => {
   const userId = useGuaranteedUser().id;
   const [isRecapOpen, setRecapOpen] = useState(false);
   const [isQrCodeOpen, setQrCodeOpen] = useState(false);
+  const [isFiltering, setFiltering] = useState(false);
   const { data: room, isLoading } = useQuery(
     [QueryKey.ROOMS, roomId],
     async ({ signal }) => {
@@ -57,7 +59,28 @@ const RoomDetail: React.FC<Props> = ({ roomId }) => {
           <AddDishButton roomId={room.id} />
         </div>
       </div>
-      <DishList roomId={room.id} />
+      <Switch.Group>
+        <div className="flex items-center rounded-lg bg-white p-2">
+          <Switch
+            checked={isFiltering}
+            onChange={setFiltering}
+            className={`${
+              isFiltering ? "bg-blue-700" : "bg-gray-200"
+            } relative inline-flex h-6 w-11 items-center rounded-full`}
+          >
+            <span
+              className={`${
+                isFiltering ? "translate-x-6" : "translate-x-1"
+              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+            />
+          </Switch>
+          <Switch.Label className="ml-4 text-sm font-semibold text-gray-700">
+            View only your dishes
+          </Switch.Label>
+        </div>
+      </Switch.Group>
+
+      <DishList isFiltering={isFiltering} roomId={room.id} />
 
       <button
         type="button"

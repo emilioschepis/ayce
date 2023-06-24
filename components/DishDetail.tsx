@@ -8,28 +8,27 @@ import AvatarList from "./AvatarList";
 
 type Props = {
   roomId: string;
+  isSelected: boolean;
+  choosers: {
+    id: string;
+    email: string;
+    image_url: string | null;
+    display_name: string | null;
+  }[];
   dish: {
     id: string;
     name: string;
     description: string | null;
-    choices: unknown;
   };
 };
 
-const DishDetail: React.FC<Props> = ({ dish, roomId }) => {
+const DishDetail: React.FC<Props> = ({
+  dish,
+  roomId,
+  choosers,
+  isSelected,
+}) => {
   const userId = useGuaranteedUser().id;
-  const choosers = (
-    dish.choices as {
-      profiles: {
-        id: string;
-        email: string;
-        image_url: string | null;
-        display_name: string | null;
-      };
-    }[]
-  ).map((choice) => choice.profiles);
-
-  const isSelected = Boolean(choosers.find((c) => c.id === userId));
 
   const { isLoading: isAdding, mutate: add } = useMutation(
     async () => {
